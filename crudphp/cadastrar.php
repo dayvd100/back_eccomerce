@@ -15,11 +15,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $data = file_get_contents('php://input');
         $jsonData = json_decode($data);
 
-        if ($jsonData !== null && isset($jsonData->idSneaker)) {
+        if ($jsonData !== null && isset($jsonData->idSneaker) && isset($jsonData->urlSneaker)) {
             $idSneaker = $jsonData->idSneaker;
+            $urlSneaker = $jsonData->urlSneaker;
 
-            $sql = $pdo->prepare("INSERT INTO produtos (idSneaker) VALUES (:idSneaker)");
+            $sql = $pdo->prepare("INSERT INTO produtos (idSneaker, urlSneaker) VALUES (:idSneaker, :urlSneaker)");
             $sql->bindValue(":idSneaker", $idSneaker);
+            $sql->bindValue(":urlSneaker", $urlSneaker);
             $sql->execute();
 
             if ($sql->rowCount() > 0) {
